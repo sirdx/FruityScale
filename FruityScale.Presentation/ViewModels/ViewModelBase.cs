@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace FruityScale.ViewModels;
+namespace FruityScale.Presentation.ViewModels;
 
 public abstract class ViewModelBase : ObservableObject
 {

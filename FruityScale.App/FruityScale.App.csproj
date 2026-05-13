@@ -5,10 +5,10 @@
         <Nullable>enable</Nullable>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <RootNamespace>FruityScale</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
@@ -22,5 +22,12 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\FruityScale.Application\FruityScale.Application.csproj" />
+      <ProjectReference Include="..\FruityScale.Domain\FruityScale.Domain.csproj" />
+      <ProjectReference Include="..\FruityScale.Infrastructure\FruityScale.Infrastructure.csproj" />
+      <ProjectReference Include="..\FruityScale.Presentation\FruityScale.Presentation.csproj" />
     </ItemGroup>
 </Project>

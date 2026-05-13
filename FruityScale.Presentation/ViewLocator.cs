@@ -1,10 +1,9 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using FruityScale.ViewModels;
+using FruityScale.Presentation.ViewModels;
 
-namespace FruityScale;
+namespace FruityScale.Presentation;
 
 /// <summary>
 /// Given a view model, returns the corresponding view if possible.
