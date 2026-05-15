@@ -11,4 +11,11 @@
       <ProjectReference Include="..\FruityScale.Domain\FruityScale.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Resources\scale_library.json" />
+      <Content Include="Resources\scale_library.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
