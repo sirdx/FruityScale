@@ -10,6 +10,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FruityScale.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FruityScale.Presentation", "FruityScale.Presentation\FruityScale.Presentation.csproj", "{1E642815-8491-45CA-876A-808FB367D490}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FruityScale.Tests", "FruityScale.Tests\FruityScale.Tests.csproj", "{9C5285AF-DD4D-477D-999C-6FB6FBC1985C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DB7FF6FE-3EAB-4F7C-AA0C-C5536BECC6B5} = {DB7FF6FE-3EAB-4F7C-AA0C-C5536BECC6B5}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +41,9 @@ Global
 		{1E642815-8491-45CA-876A-808FB367D490}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E642815-8491-45CA-876A-808FB367D490}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E642815-8491-45CA-876A-808FB367D490}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C5285AF-DD4D-477D-999C-6FB6FBC1985C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C5285AF-DD4D-477D-999C-6FB6FBC1985C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C5285AF-DD4D-477D-999C-6FB6FBC1985C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C5285AF-DD4D-477D-999C-6FB6FBC1985C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
