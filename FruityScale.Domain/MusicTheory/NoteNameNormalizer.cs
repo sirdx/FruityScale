@@ -1,3 +1,5 @@
+using Avalonia.Data.Converters;
+
 namespace FruityScale.Domain.MusicTheory;
 
 public static class NoteNameNormalizer
@@ -22,4 +24,7 @@ public static class NoteNameNormalizer
         int octave = (noteNumber / 12);
         return $"{GetNoteName(noteNumber)}{octave}";
     }
+    
+    public static readonly IValueConverter NoteNameConverter = 
+        new FuncValueConverter<int, string>(noteNumber => GetNoteName(noteNumber));
 }

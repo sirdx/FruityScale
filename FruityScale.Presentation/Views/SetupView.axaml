@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FruityScale.Presentation.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="FruityScale.Presentation.Views.SetupView"
+             x:DataType="vm:SetupViewModel"
+             Background="#121214">
+    
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border Background="#1E1E22" 
+                BorderBrush="#2D2D34" 
+                BorderThickness="1" 
+                CornerRadius="12" 
+                Padding="40,32" 
+                Width="520"
+                BoxShadow="0 4 20 #000000">
+            
+            <!-- TODO: add example showing correct path on windows/macos -->
+            <StackPanel Spacing="24">
+                <StackPanel Spacing="8" HorizontalAlignment="Center">
+                    <TextBlock Text="Welcome to FruityScale" FontSize="26" FontWeight="Bold" Foreground="#F3F4F6" HorizontalAlignment="Center"/>
+                    <TextBlock Text="To get started, please select your main FL Studio installation folder or directly point to the 'Piano roll scripts' directory." 
+                               TextWrapping="Wrap" 
+                               TextAlignment="Center" 
+                               FontSize="13"
+                               Foreground="#9CA3AF" 
+                               LineHeight="18"/>
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <TextBox Text="{Binding SelectedPath}" 
+                             PlaceholderText="DAW folder path..."
+                             Padding="12"
+                             FontSize="14"
+                             Background="#141416"
+                             BorderBrush="#2D2D34"
+                             CornerRadius="6"
+                             VerticalContentAlignment="Center"/>
+                </StackPanel>
+                
+                <!-- TODO: change pointer when on hover -->
+                <Button Content="Confirm Path &amp; Install Script" 
+                        Command="{Binding ConfirmPathCommand}"
+                        HorizontalAlignment="Stretch" 
+                        HorizontalContentAlignment="Center"
+                        Padding="14"
+                        FontSize="15"
+                        FontWeight="SemiBold"
+                        Background="#3B82F6"
+                        Foreground="White"
+                        CornerRadius="6">
+                    <Button.Styles>
+                        <Style Selector="Button:pointerover /template/ ContentPresenter">
+                            <Setter Property="Background" Value="#2563EB"/>
+                        </Style>
+                    </Button.Styles>
+                </Button>
+
+                <TextBlock Text="{Binding ErrorMessage}" 
+                           Foreground="#EF4444" 
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center"
+                           FontSize="13"
+                           HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

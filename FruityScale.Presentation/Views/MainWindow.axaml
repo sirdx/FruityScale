@@ -2,9 +2,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:FruityScale.Presentation.ViewModels"
+        xmlns:views="using:FruityScale.Presentation.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FruityScale.Presentation.Views.MainWindow"
-        Title="MainWindow">
+        x:DataType="vm:MainWindowViewModel"
+        Title="FruityScale">
     
-        <TextBlock Text="Hello world!" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Window.DataTemplates>
+                <DataTemplate DataType="{x:Type vm:SetupViewModel}">
+                        <views:SetupView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:MainDashboardViewModel}">
+                        <views:MainDashboardView/>
+                </DataTemplate>
+        </Window.DataTemplates>
+
+        <ContentControl Content="{Binding CurrentContent}"/>
 </Window>

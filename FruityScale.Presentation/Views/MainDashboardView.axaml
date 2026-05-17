@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:FruityScale.Presentation.ViewModels"
+             xmlns:models="using:FruityScale.Domain.Models"
+             xmlns:theory="using:FruityScale.Domain.MusicTheory"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="500"
+             x:Class="FruityScale.Presentation.Views.MainDashboardView"
+             x:DataType="vm:MainDashboardViewModel"
+             Background="#121214">
+    
+    <Grid RowDefinitions="Auto, Auto, *, Auto" Margin="24">
+        <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Margin="0,0,0,20">
+            <StackPanel Grid.Column="0" Spacing="4">
+                <TextBlock Text="FruityScale Dashboard" FontSize="24" FontWeight="SemiBold" Foreground="#F3F4F6"/>
+                <TextBlock Text="{Binding DawPath, StringFormat='Active Path: {0}'}" FontSize="12" Foreground="#9CA3AF" TextWrapping="NoWrap"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- TODO: change pointer when on hover -->
+        <Button Grid.Row="1" 
+                Content="Scan Piano Roll" 
+                Command="{Binding ScanNotesCommand}"
+                IsEnabled="{Binding !IsScanning}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Center"
+                Padding="16"
+                Background="#10B981"
+                Foreground="#FFFFFF"
+                FontSize="15"
+                FontWeight="SemiBold"
+                CornerRadius="8"
+                Margin="0,0,0,20">
+            <Button.Styles>
+                <Style Selector="Button:pointerover /template/ ContentPresenter">
+                    <Setter Property="Background" Value="#059669"/>
+                </Style>
+            </Button.Styles>
+        </Button>
+
+        <ListBox Grid.Row="2" 
+                 ItemsSource="{Binding ScanResults}" 
+                 Background="#1E1E22" 
+                 CornerRadius="8"
+                 BorderBrush="#2D2D34"
+                 BorderThickness="1"
+                 Padding="8">
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0,0,0,6"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </ListBox.Styles>
+            
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="models:ScaleMatchResult">
+                    <Border Padding="16,12" 
+                            Background="#252529" 
+                            CornerRadius="6" 
+                            BorderBrush="#2D2D34" 
+                            BorderThickness="1">
+                        <Grid ColumnDefinitions="Auto, *, Auto">
+                            <Border Grid.Column="0" 
+                                    Background="#1A2E26" 
+                                    CornerRadius="4" 
+                                    Padding="8,4" 
+                                    Margin="0,0,16,0"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Score, StringFormat='{}{0:P0}'}" 
+                                           FontWeight="Bold" 
+                                           FontSize="14" 
+                                           Foreground="#34D399"
+                                           HorizontalAlignment="Center"/>
+                            </Border>
+                            
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal" Spacing="6">
+                                <TextBlock Text="{Binding RootNote, Converter={x:Static theory:NoteNameNormalizer.NoteNameConverter}}"
+                                           FontWeight="Bold" 
+                                           FontSize="16"
+                                           Foreground="#F3F4F6"/>
+                                <TextBlock Text="{Binding Scale.Name}" 
+                                           FontSize="16"
+                                           Foreground="#E5E7EB"/>
+                            </StackPanel>
+                            
+                            <Border Grid.Column="2" 
+                                    Background="#2A2A30" 
+                                    CornerRadius="4" 
+                                    Padding="8,4"
+                                    VerticalAlignment="Center">
+                                <TextBlock Text="{Binding WrongNotes.Count, StringFormat='Out of Scale: {0}'}" 
+                                           FontSize="12"
+                                           Foreground="#9CA3AF"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Border Grid.Row="3" 
+                Background="#1E1E22" 
+                CornerRadius="6" 
+                Padding="12,8" 
+                Margin="0,16,0,0"
+                BorderBrush="#2D2D34"
+                BorderThickness="1">
+            <TextBlock Text="{Binding StatusMessage}" 
+                       FontSize="12" 
+                       Foreground="#9CA3AF"
+                       TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</UserControl>
