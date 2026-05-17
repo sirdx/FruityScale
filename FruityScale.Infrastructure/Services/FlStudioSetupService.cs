@@ -22,12 +22,12 @@ public class FlStudioSetupService : ISetupService
             string sourceScriptPath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "Resources",
-                "fruity_exporter.pyscript"
+                "FlStudioNotesExporter.pyscript"
             );
 
             string targetScriptPath = Path.Combine(
                 targetScriptsFolder,
-                "FruityScaleExporter.pyscript"
+                "FlStudioNotesExporter.pyscript"
             );
 
             if (!File.Exists(sourceScriptPath))

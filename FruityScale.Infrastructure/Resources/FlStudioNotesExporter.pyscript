@@ -1,0 +1,47 @@
+import flpianoroll as flp
+import os
+import json
+
+# Due to FL Studio Python env being very sandboxed, it might be not possible to set custom path to where our .json should be saved,
+# so the path is current working directory of our .pyscript
+BASE_PATH = os.getcwd()
+NOTES_CHART = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
+
+def createDialog():
+    return flp.ScriptDialog("FruityScale", "Saves notes to 'notes.json'\n\n\nMade by 3060s")
+
+def apply(form):
+    file_path = os.path.join(BASE_PATH, "notes.json")
+    
+    count = flp.score.noteCount
+    if count == 0:
+        flp.Utils.log("No notes found.")
+        return
+
+    note_list = []
+
+    for i in range(count):
+        note = flp.score.getNote(i)
+        
+        name = NOTES_CHART[note.number % 12]
+        octave = note.number // 12
+        full_name = f"{name}{octave}"
+        
+        note_data = {
+            "note_number": note.number,
+            "name": full_name,
+            "key": name
+            # "time": note.time,
+            # "length": note.length,
+            # "color": note.color + 1
+        }
+        note_list.append(note_data)
+
+    try:
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(note_list, f, indent=4)
+        
+        flp.Utils.log(f"SUCCESS: Notes saved to {file_path}")
+        
+    except Exception as e:
+        flp.Utils.log(f"JSON ERROR: {str(e)}")
