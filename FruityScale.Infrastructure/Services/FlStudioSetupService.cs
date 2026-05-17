@@ -17,8 +17,7 @@ public class FlStudioSetupService : ISetupService
                 return false;
 
             Directory.CreateDirectory(targetScriptsFolder);
-
-            // TODO: change this .pyscript when i add it to project
+            
             string sourceScriptPath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "Resources",
