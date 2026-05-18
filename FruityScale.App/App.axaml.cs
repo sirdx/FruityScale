@@ -1,11 +1,14 @@
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using FruityScale.Application.Contracts;
 using FruityScale.Application.Services;
 using FruityScale.Domain.MusicTheory;
+using FruityScale.Domain.Services;
 using FruityScale.Infrastructure.Persistence;
 using FruityScale.Infrastructure.Services;
 using FruityScale.Presentation.ViewModels;
 using FruityScale.Presentation.Views;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FruityScale;
 
@@ -20,25 +23,22 @@ public partial class App : Avalonia.Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var scaleMatcher = new ScaleMatcher();
-            var scaleProvider = new JsonScaleProvider();
-            var noteProvider = new JsonNoteProvider();
-            var settingsService = new JsonSettingsService();
-            var setupService = new FlStudioSetupService();
-
-            var orchestrator = new ScaleMatchingOrchestrator(
-                scaleMatcher,
-                scaleProvider,
-                noteProvider,
-                settingsService,
-                setupService
-            );
+            var services = new ServiceCollection();
             
-            var mainWindowViewModel = new MainWindowViewModel(
-                settingsService,
-                setupService,
-                orchestrator
-            );
+            services.AddSingleton<IScaleMatcher, ScaleMatcher>();
+            services.AddSingleton<IScaleProvider, JsonScaleProvider>();
+            services.AddSingleton<INoteProvider, JsonNoteProvider>();
+            services.AddSingleton<ISettingsService, JsonSettingsService>();
+            services.AddSingleton<ISetupService, FlStudioSetupService>();
+            
+            services.AddSingleton<ScaleMatchingOrchestrator>();
+            
+            services.AddTransient<MainWindowViewModel>();
+            services.AddTransient<MainDashboardViewModel>();
+            
+            var serviceProvider = services.BuildServiceProvider();
+            
+            var mainWindowViewModel = serviceProvider.GetRequiredService<MainWindowViewModel>();
             
             desktop.MainWindow = new MainWindow
             {
