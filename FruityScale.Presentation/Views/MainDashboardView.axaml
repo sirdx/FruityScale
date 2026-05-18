@@ -225,6 +225,45 @@
                                     </ItemsControl>
                                 </Grid>
                                 
+                                <Border BorderBrush="#222226" BorderThickness="0,0,0,1" Margin="0,12,0,12"/>
+
+                                <TextBlock Text="Keyboard Visualization" FontSize="13" Foreground="#9CA3AF" Margin="0,0,0,8"/>
+
+                                <!-- Virtual piano keyboard visualization -->
+                                <ItemsControl ItemsSource="{Binding KeyboardVisualization}" HorizontalAlignment="Center">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="0"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    
+                                    <!-- Piano key template -->
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:PianoKeyViewModel">
+                                            <Border Width="32" 
+                                                    Height="{Binding KeyHeight}" 
+                                                    Background="{Binding BackgroundColor}"
+                                                    BorderBrush="{Binding BorderColor}"
+                                                    BorderThickness="1"
+                                                    CornerRadius="0,0,4,4"
+                                                    Margin="1,0,1,0"
+                                                    VerticalAlignment="Top">
+                                                
+                                                <!-- Piano key label -->
+                                                <TextBlock Text="{Binding NoteName}" 
+                                                           Foreground="{Binding TextColor}" 
+                                                           FontSize="10" 
+                                                           FontWeight="Bold"
+                                                           HorizontalAlignment="Center" 
+                                                           VerticalAlignment="Bottom" 
+                                                           Margin="0,0,0,6"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <Border BorderBrush="#222226" BorderThickness="0,0,0,1" Margin="0,12,0,12"/>
+                                
                                 <!-- Perfect match success message -->
                                 <Border Background="#14241C" BorderBrush="#1B4332" BorderThickness="1" CornerRadius="4" Padding="10" IsVisible="{Binding !HasWrongNotes}">
                                     <StackPanel Orientation="Horizontal" Spacing="8">

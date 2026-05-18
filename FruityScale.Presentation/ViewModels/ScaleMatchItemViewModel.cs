@@ -21,6 +21,8 @@ public partial class ScaleMatchItemViewModel : ObservableObject
     public List<string> MissingNotes { get; }
     public List<string> UserNotes { get; }
     
+    public List<PianoKeyViewModel> KeyboardVisualization { get; }
+    
     public bool HasWrongNotes => WrongNotes.Any();
     public bool HasMissingNotes => MissingNotes.Any();
 
@@ -48,6 +50,16 @@ public partial class ScaleMatchItemViewModel : ObservableObject
             .Union(WrongNotes)
             .OrderBy(note => Array.IndexOf(NoteNames, note))
             .ToList();
+        
+        KeyboardVisualization = NoteNames.Select(note => 
+        {
+            bool isPlayed = UserNotes.Contains(note);
+            bool isWrong = WrongNotes.Contains(note);
+            bool isMissing = MissingNotes.Contains(note);
+            bool isInScale = ScaleNotes.Contains(note);
+
+            return new PianoKeyViewModel(note, isPlayed, isWrong, isMissing, isInScale);
+        }).ToList();
     }
 
     [RelayCommand]
@@ -57,3 +69,48 @@ public partial class ScaleMatchItemViewModel : ObservableObject
     }
 }
 
+// Helper class for displaying virtual piano keyboard
+public class PianoKeyViewModel
+{
+    public string NoteName { get; }
+    public bool IsWhiteKey { get; }
+    
+    public string BackgroundColor { get; }
+    public string BorderColor { get; }
+    public string TextColor { get; }
+    public double KeyHeight { get; }
+
+    public PianoKeyViewModel(string noteName, bool isPlayed, bool isWrong, bool isMissing, bool isInScale)
+    {
+        NoteName = noteName;
+        IsWhiteKey = !noteName.Contains('#');
+        KeyHeight = IsWhiteKey ? 80 : 50; // make black keys shorter
+
+        // TODO: imo this coloring logic is a bit unreadable 
+        if (isWrong)
+        {
+            BackgroundColor = "#2D1A1A";
+            BorderColor = "#EF4444";
+            TextColor = "#FFCACC";
+        }
+        else if (isPlayed && !isWrong)
+        {
+            BackgroundColor = "#1E293B";
+            BorderColor = "#3B82F6";
+            TextColor = "#93C5FD";
+        }
+        else if (isMissing)
+        {
+            BackgroundColor = "#2D251A";
+            BorderColor = "#F59E0B";
+            TextColor = "#FDE68A";
+        }
+        else 
+        {
+            // note out of scale or isn't played
+            BackgroundColor = IsWhiteKey ? "#E5E7EB" : "#121214";
+            BorderColor = "#3F3F46";
+            TextColor = IsWhiteKey ? "#121214" : "#9CA3AF";
+        }
+    }
+}
