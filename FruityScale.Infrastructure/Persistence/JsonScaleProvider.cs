@@ -1,20 +1,51 @@
 using System.Text.Json;
 using FruityScale.Application.Contracts;
 using FruityScale.Domain.Models;
+using Microsoft.Extensions.Logging;
 
 namespace FruityScale.Infrastructure.Persistence;
 
 public class JsonScaleProvider : IScaleProvider
 {
+    private readonly ILogger<JsonScaleProvider> _logger;
+
+    public JsonScaleProvider(ILogger<JsonScaleProvider> logger)
+    {
+        _logger = logger;
+    }
+    
     // TODO: filePath shouldn't be passed as param. The best option is to get filepath const from something like appsettings.json
     public async Task<List<ScaleDefinition>> GetScalesAsync(string filePath)
     {
+        _logger.LogInformation("Attempting to load scales library from file: {FilePath}", filePath);
         //if (!File.Exists(filePath)) return new List<ScaleDefinition>();
         
-        await using var stream = File.OpenRead(filePath);
-        
-        // Ignore case
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        return await JsonSerializer.DeserializeAsync<List<ScaleDefinition>>(stream, options) ?? new();
+        try
+        {
+            if (!File.Exists(filePath))
+            {
+                _logger.LogWarning("Scales library file does not exist at path: {FilePath}", filePath);
+                return new List<ScaleDefinition>();
+            }
+
+            await using var stream = File.OpenRead(filePath);
+            
+            // Ignore case
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var scales = await JsonSerializer.DeserializeAsync<List<ScaleDefinition>>(stream, options) ?? new();
+            
+            _logger.LogInformation("Successfully loaded {Count} scales from library.", scales.Count);
+            return scales;
+        }
+        catch (JsonException ex)
+        {
+            _logger.LogError(ex, "Failed to parse scale library JSON. Check if the file format matches ScaleDefinition.");
+            return new List<ScaleDefinition>();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Unexpected error while reading scale library file at {FilePath}", filePath);
+            return new List<ScaleDefinition>();
+        }
     }
 }

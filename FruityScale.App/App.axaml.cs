@@ -9,6 +9,8 @@ using FruityScale.Infrastructure.Services;
 using FruityScale.Presentation.ViewModels;
 using FruityScale.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace FruityScale;
 
@@ -24,6 +26,12 @@ public partial class App : Avalonia.Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var services = new ServiceCollection();
+            
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddSerilog(dispose: true);
+            });
             
             services.AddSingleton<IScaleMatcher, ScaleMatcher>();
             services.AddSingleton<IScaleProvider, JsonScaleProvider>();

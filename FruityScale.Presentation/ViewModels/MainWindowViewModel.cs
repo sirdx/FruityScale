@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using FruityScale.Application.Contracts;
 using FruityScale.Application.Services;
+using Microsoft.Extensions.Logging;
 
 namespace FruityScale.Presentation.ViewModels;
 
@@ -9,6 +10,8 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly ISettingsService _settingsService;
     private readonly ISetupService _setupService;
     private readonly ScaleMatchingOrchestrator _orchestrator;
+    private readonly ILoggerFactory _loggerFactory;
+    private readonly ILogger<MainWindowViewModel> _logger;
     
     [ObservableProperty]
     private ViewModelBase? _currentContent;
@@ -16,12 +19,17 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(
         ISettingsService settingsService, 
         ISetupService setupService, 
-        ScaleMatchingOrchestrator orchestrator)
+        ScaleMatchingOrchestrator orchestrator,
+        ILoggerFactory loggerFactory,
+        ILogger<MainWindowViewModel> logger)
     {
         _settingsService = settingsService;
         _setupService = setupService;
         _orchestrator = orchestrator;
-
+        _loggerFactory = loggerFactory;
+        _logger = _loggerFactory.CreateLogger<MainWindowViewModel>();
+        
+        _logger.LogDebug("MainWindowViewModel initialized.");
         DetermineInitialView();
     }
     
@@ -31,11 +39,17 @@ public partial class MainWindowViewModel : ViewModelBase
 
         if (string.IsNullOrEmpty(currentPath))
         {
-            CurrentContent = new SetupViewModel(this, _setupService, _settingsService);
+            _logger.LogInformation("No FL Studio path configured. Routing user to SetupView.");
+            
+            var setupLogger = _loggerFactory.CreateLogger<SetupViewModel>();
+            CurrentContent = new SetupViewModel(this, _setupService, _settingsService, setupLogger);
         }
         else
         {
-            CurrentContent = new MainDashboardViewModel(_orchestrator, _settingsService);
+            _logger.LogInformation("FL Studio path found: {Path}. Routing user to MainDashboardView.", currentPath);
+            
+            var dashboardLogger = _loggerFactory.CreateLogger<MainDashboardViewModel>();
+            CurrentContent = new MainDashboardViewModel(_orchestrator, _settingsService, dashboardLogger);
         }
     }
 }

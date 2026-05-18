@@ -1,15 +1,19 @@
 using System.Text.Json;
 using FruityScale.Application.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace FruityScale.Infrastructure.Persistence;
 
 public class JsonSettingsService : ISettingsService
 {
+    private readonly ILogger<JsonSettingsService> _logger;
     private readonly string _configPath;
     private string _cachedPath = string.Empty;
 
-    public JsonSettingsService()
+    public JsonSettingsService(ILogger<JsonSettingsService> logger)
     {
+        _logger = logger;
+        
         // TODO: change .fruityscale (or directory in general) to something different
         var appFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".fruityscale");
         Directory.CreateDirectory(appFolder);
@@ -26,10 +30,13 @@ public class JsonSettingsService : ISettingsService
             var json = File.ReadAllText(_configPath);
             using var doc = JsonDocument.Parse(json);
             _cachedPath = doc.RootElement.GetProperty("FlStudioPath").GetString() ?? string.Empty;
+            _logger.LogInformation("Loaded FL Studio path from config: {Path}", _cachedPath);
+            
             return _cachedPath;
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Error reading FL Studio path from config file.");
             return string.Empty;
         }
     }
@@ -37,8 +44,15 @@ public class JsonSettingsService : ISettingsService
     public void SaveFlStudioPath(string path)
     {
         _cachedPath = path;
-        var configData = new { FlStudioPath = path };
-        var json = JsonSerializer.Serialize(configData);
-        File.WriteAllText(_configPath, json);
+        
+        try
+        {
+            var json = JsonSerializer.Serialize(new { FlStudioPath = path });
+            File.WriteAllText(_configPath, json);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to save FL Studio path to {ConfigPath}", _configPath);
+        }
     }
 }

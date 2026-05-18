@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using FruityScale.Application.Contracts;
 using FruityScale.Application.Services;
 using FruityScale.Domain.Models;
+using Microsoft.Extensions.Logging;
 
 namespace FruityScale.Presentation.ViewModels;
 
@@ -11,6 +12,7 @@ public partial class MainDashboardViewModel : ViewModelBase
 {
     private readonly ScaleMatchingOrchestrator _orchestrator;
     private readonly ISettingsService _settingsService;
+    private readonly ILogger<MainDashboardViewModel> _logger;
 
     [ObservableProperty]
     private string _dawPath;
@@ -25,17 +27,22 @@ public partial class MainDashboardViewModel : ViewModelBase
 
     public MainDashboardViewModel(
         ScaleMatchingOrchestrator orchestrator, 
-        ISettingsService settingsService)
+        ISettingsService settingsService,
+        ILogger<MainDashboardViewModel> logger)
     {
         _orchestrator = orchestrator;
         _settingsService = settingsService;
+        _logger = logger;
         
         _dawPath = _settingsService.GetFlStudioPath();
+        _logger.LogDebug("MainDashboardViewModel initialized with DAW path: {DawPath}", _dawPath);
     }
     
     [RelayCommand]
     private async Task ScanNotesAsync()
     {
+        _logger.LogInformation("User triggered 'Scan Piano Roll' operation.");
+        
         IsScanning = true;
         StatusMessage = "Scanning and matching scales...";
         ScanResults.Clear();
@@ -52,13 +59,21 @@ public partial class MainDashboardViewModel : ViewModelBase
                 // TODO: this add this number to some defines in settings later so user can change number of results etc
                 if (count >= 40) break;
             }
-
-            StatusMessage = ScanResults.Count == 0 ? 
-                "notes.json file not found or it's empty. Are you sure you have run script in FL Studio?"
-                : $"Success! Found {ScanResults.Count} matches.";
+            
+            if (ScanResults.Count == 0)
+            {
+                _logger.LogWarning("Scan completed, but no match results were loaded into the UI. Target file might be empty or missing.");
+                StatusMessage = "notes.json file not found or it's empty. Are you sure you have run script in FL Studio?";
+            }
+            else
+            {
+                _logger.LogInformation("Successfully populated UI with {Count} scale match results.", ScanResults.Count);
+                StatusMessage = $"Success! Found {ScanResults.Count} matches.";
+            }
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "An unhandled exception occurred during UI note scanning update.");
             StatusMessage = $"Scanning error: {ex.Message}";
         }
         finally

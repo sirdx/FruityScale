@@ -1,20 +1,34 @@
 using FruityScale.Application.Contracts;
+using Microsoft.Extensions.Logging;
 
 namespace FruityScale.Infrastructure.Services;
 
 public class FlStudioSetupService : ISetupService
 {
+    private readonly ILogger<FlStudioSetupService> _logger;
+
+    public FlStudioSetupService(ILogger<FlStudioSetupService> logger)
+    {
+        _logger = logger;
+    }
+    
     public bool ValidateAndSetup(string path)
     {
         if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
+        {
+            _logger.LogWarning("Validation failed: Provided path is empty or does not exist: {Path}", path);
             return false;
+        }
 
         try
         {
             string targetScriptsFolder = ResolveScriptsFolder(path);
 
             if (targetScriptsFolder == null)
+            {
+                _logger.LogWarning("Validation failed: Could not resolve FL Studio scripts folder from path: {Path}", path);
                 return false;
+            }
 
             Directory.CreateDirectory(targetScriptsFolder);
             
@@ -30,14 +44,19 @@ public class FlStudioSetupService : ISetupService
             );
 
             if (!File.Exists(sourceScriptPath))
+            {
+                _logger.LogError("Setup failed: Source script file not found at: {SourcePath}", sourceScriptPath);
                 return false;
+            }
 
             File.Copy(sourceScriptPath, targetScriptPath, overwrite: true);
-
+            
+            _logger.LogInformation("Successfully deployed FL Studio script to: {TargetPath}", targetScriptPath);
             return true;
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Unexpected error occurred during FL Studio validation and setup.");
             return false;
         }
     }
@@ -47,7 +66,10 @@ public class FlStudioSetupService : ISetupService
         string targetScriptsFolder = ResolveScriptsFolder(path);
 
         if (targetScriptsFolder == null)
+        {
+            _logger.LogError("Failed to get notes JSON path. Invalid FL Studio path: {Path}", path);
             throw new ArgumentException("Invalid FL Studio path.");
+        }
 
         return Path.Combine(targetScriptsFolder, "notes.json");
     }

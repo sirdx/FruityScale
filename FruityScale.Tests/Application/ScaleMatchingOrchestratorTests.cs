@@ -2,12 +2,14 @@ using FruityScale.Application.Contracts;
 using FruityScale.Application.Services;
 using FruityScale.Domain.Models;
 using FruityScale.Domain.Services;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
 
 namespace FruityScale.Tests.Application;
 
 public class ScaleMatchingOrchestratorTests : IDisposable
 {
+    private readonly ILogger<ScaleMatchingOrchestrator> _logger;
     private readonly IScaleMatcher _scaleMatcher;
     private readonly IScaleProvider _scaleProvider;
     private readonly INoteProvider _noteProvider;
@@ -19,6 +21,7 @@ public class ScaleMatchingOrchestratorTests : IDisposable
 
     public ScaleMatchingOrchestratorTests()
     {
+        _logger = Substitute.For<ILogger<ScaleMatchingOrchestrator>>();
         _scaleMatcher = Substitute.For<IScaleMatcher>();
         _scaleProvider = Substitute.For<IScaleProvider>();
         _noteProvider = Substitute.For<INoteProvider>();
@@ -26,6 +29,7 @@ public class ScaleMatchingOrchestratorTests : IDisposable
         _setupService = Substitute.For<ISetupService>();
 
         _sut = new ScaleMatchingOrchestrator(
+            _logger,
             _scaleMatcher,
             _scaleProvider,
             _noteProvider,
