@@ -21,7 +21,7 @@ public partial class MainDashboardViewModel : ViewModelBase
     [ObservableProperty]
     private string _statusMessage = "Ready to scan. Run FlStudioNotesExporter script in FL studio, and click Scan.";
     
-    public ObservableCollection<ScaleMatchResult> ScanResults { get; } = new();
+    public ObservableCollection<ScaleMatchItemViewModel> ScanResults { get; } = new();
 
     public MainDashboardViewModel(
         ScaleMatchingOrchestrator orchestrator, 
@@ -47,9 +47,10 @@ public partial class MainDashboardViewModel : ViewModelBase
             int count = 0;
             foreach (var match in results)
             {
-                ScanResults.Add(match);
+                ScanResults.Add(new ScaleMatchItemViewModel(match));
                 count++;
-                if (count >= 20) break;
+                // TODO: this add this number to some defines in settings later so user can change number of results etc
+                if (count >= 40) break;
             }
 
             StatusMessage = ScanResults.Count == 0 ? 
