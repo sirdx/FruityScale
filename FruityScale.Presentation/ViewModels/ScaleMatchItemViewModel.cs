@@ -7,10 +7,6 @@ namespace FruityScale.Presentation.ViewModels;
 
 public partial class ScaleMatchItemViewModel : ObservableObject
 {
-    // It might be possible to run something like JsonNoteProvider, although it need path as parameter...
-    private static readonly string[] NoteNames =
-        { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
-    
     public ScaleMatchResult Result { get; }
 
     [ObservableProperty]
@@ -48,10 +44,10 @@ public partial class ScaleMatchItemViewModel : ObservableObject
         var correctPlayedNotes = ScaleNotes.Except(MissingNotes);
         UserNotes = correctPlayedNotes
             .Union(WrongNotes)
-            .OrderBy(note => Array.IndexOf(NoteNames, note))
+            .OrderBy(note => Array.IndexOf(MusicConstants.NoteNamesSharp, note))
             .ToList();
         
-        KeyboardVisualization = NoteNames.Select(note => 
+        KeyboardVisualization = MusicConstants.NoteNamesSharp.Select(note => 
         {
             bool isPlayed = UserNotes.Contains(note);
             bool isWrong = WrongNotes.Contains(note);

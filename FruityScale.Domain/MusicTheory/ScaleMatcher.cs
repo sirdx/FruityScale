@@ -7,7 +7,7 @@ public class ScaleMatcher : IScaleMatcher
 {
     public IEnumerable<ScaleMatchResult> Match(IEnumerable<int> userNotes, IEnumerable<ScaleDefinition> library)
     {
-        var uniqueNotes = userNotes.Select(n => n % 12).ToHashSet();
+        var uniqueNotes = userNotes.Select(n => n % MusicConstants.NotesInOctave).ToHashSet();
         
         var results = new List<ScaleMatchResult>();
         
@@ -15,13 +15,10 @@ public class ScaleMatcher : IScaleMatcher
 
         foreach (var scale in library)
         {
-            // Magic number alert:
-            // octave consist of 12 notes so we iterate through every possible root note
-            // TODO: It wouldn't be dumb to add this to project-wide constants or something because it's used in few places
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < MusicConstants.NotesInOctave; i++)
             {
                 var scaleNotes = scale.Intervals
-                    .Select(interval => (interval + i) % 12)
+                    .Select(interval => (interval + i) % MusicConstants.NotesInOctave)
                     .ToHashSet();
                 
                 var matches = uniqueNotes.Where(n => scaleNotes.Contains(n)).ToList();
