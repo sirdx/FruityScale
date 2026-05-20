@@ -148,8 +148,8 @@
                                 BorderBrush="#2D2D34"
                                 BorderThickness="1,0,1,1"
                                 CornerRadius="0,0,6,6"
-                                Padding="16"
-                                Margin="4,-2,4,0">
+                                Margin="0,-1,0,0"
+                                Padding="16">
                             <StackPanel Spacing="14">
                                 <!-- Title -->
                                 <TextBlock Text="Scale Analysis Details" FontSize="13" FontWeight="SemiBold" Foreground="#9CA3AF"/>
