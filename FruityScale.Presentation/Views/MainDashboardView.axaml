@@ -150,7 +150,7 @@
                                 <TextBlock Text="Scale Analysis Details" FontSize="13" FontWeight="SemiBold" Foreground="#9CA3AF"/>
                                 
                                 <!-- User played notes -->
-                                <Grid ColumnDefinitions="140, *">
+                                <Grid ColumnDefinitions="160, *">
                                     <TextBlock Grid.Column="0" Text="Your played notes:" FontSize="13" Foreground="#3B82F6" VerticalAlignment="Center"/>
                                     <ItemsControl Grid.Column="1" ItemsSource="{Binding UserNotes}">
                                         <ItemsControl.ItemsPanel>
@@ -170,10 +170,10 @@
 
                                 <Border BorderBrush="#222226" BorderThickness="0,0,0,1" Margin="0,4"/>
 
-                                <!-- Notes in scale -->
-                                <Grid ColumnDefinitions="140, *">
-                                    <TextBlock Grid.Column="0" Text="Full scale notes:" FontSize="13" Foreground="#9CA3AF" VerticalAlignment="Center"/>
-                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding ScaleNotes}">
+                                <!-- Missing notes from the detected scale -->
+                                <Grid ColumnDefinitions="160, *" IsVisible="{Binding HasMissingNotes}">
+                                    <TextBlock Grid.Column="0" Text="Notes you can add:" FontSize="13" Foreground="#F59E0B" VerticalAlignment="Center"/>
+                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding MissingNotes}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal"/>
@@ -181,17 +181,16 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate x:DataType="x:String">
-                                                <Border Background="#202024" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="0,2,6,2">
-                                                    <TextBlock Text="{Binding}" FontSize="12" FontWeight="SemiBold" Foreground="#E5E7EB"/>
+                                                <Border Background="#2D251A" BorderBrush="#4A3723" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="0,2,6,2">
+                                                    <TextBlock Text="{Binding}" FontSize="12" FontWeight="SemiBold" Foreground="#FDE68A"/>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </Grid>
-
                                 
                                 <!-- Notes outside the scale -->
-                                <Grid ColumnDefinitions="140, *" IsVisible="{Binding HasWrongNotes}">
+                                <Grid ColumnDefinitions="160, *" IsVisible="{Binding HasWrongNotes}">
                                     <TextBlock Grid.Column="0" Text="Notes outside scale:" FontSize="13" Foreground="#EF4444" VerticalAlignment="Center"/>
                                     <ItemsControl Grid.Column="1" ItemsSource="{Binding WrongNotes}">
                                         <ItemsControl.ItemsPanel>
@@ -208,11 +207,11 @@
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </Grid>
-
-                                <!-- Missing notes from the detected scale -->
-                                <Grid ColumnDefinitions="140, *" IsVisible="{Binding HasMissingNotes}">
-                                    <TextBlock Grid.Column="0" Text="Missing scale notes:" FontSize="13" Foreground="#F59E0B" VerticalAlignment="Center"/>
-                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding MissingNotes}">
+                                
+                                <!-- Notes in scale -->
+                                <Grid ColumnDefinitions="160, *">
+                                    <TextBlock Grid.Column="0" Text="Notes in scale:" FontSize="13" Foreground="#9CA3AF" VerticalAlignment="Center"/>
+                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding ScaleNotes}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <WrapPanel Orientation="Horizontal"/>
@@ -220,8 +219,8 @@
                                         </ItemsControl.ItemsPanel>
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate x:DataType="x:String">
-                                                <Border Background="#2D251A" BorderBrush="#4A3723" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="0,2,6,2">
-                                                    <TextBlock Text="{Binding}" FontSize="12" FontWeight="SemiBold" Foreground="#FDE68A"/>
+                                                <Border Background="#202024" BorderBrush="#3F3F46" BorderThickness="1" CornerRadius="4" Padding="6,2" Margin="0,2,6,2">
+                                                    <TextBlock Text="{Binding}" FontSize="12" FontWeight="SemiBold" Foreground="#E5E7EB"/>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
