@@ -25,5 +25,11 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-preview.4.26230.115" />
     </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaResource Include="Resources\favicon.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
+    </ItemGroup>
     
 </Project>

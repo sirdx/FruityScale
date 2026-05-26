@@ -7,7 +7,8 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="FruityScale.Presentation.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Title="FruityScale">
+        Title="FruityScale"
+        Icon="avares://FruityScale.Infrastructure/Resources/favicon.png">
     
         <Window.DataTemplates>
                 <DataTemplate DataType="{x:Type vm:SetupViewModel}">
