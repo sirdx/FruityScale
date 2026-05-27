@@ -68,14 +68,43 @@ With just few clicks, FruityScale retrieves note data directly from your current
 
 ## Getting Started
 
-Currently, FruityScale is distributed as pre-compiled, ready-to-run executables for major operating systems. You do not need to build the project from source unless you want to contribute.
+### Prerequisites
 
-To get started:
-1. Head over to the **[Releases](https://github.com/3060s/FruityScale/releases)** page.
-2. Download the latest version corresponding to your operating system.
-3. Extract and run the application.
+To build this project from source, you need to install the required tools for your operating system:
 
-*(Detailed installation instructions and FL Studio script setup guide will be added in future releases).*
+#### Windows
+1. **.NET 10 SDK** – Download and install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download).
+2. **Git** – Download and install [Git for Windows](https://git-scm.com/download/win) (required to clone the repository via terminal).
+
+#### macOS
+1. **.NET 10 SDK** – Download and install the [.NET 10 SDK](https://dotnet.microsoft.com/en-us/download) (select the installer matching your chip: Intel or Apple Silicon M1/M2/M3).
+2. **Git** – Install via [Homebrew](https://brew.sh/) (`brew install git`) or download from [git-scm.com](https://git-scm.com/download/mac).
+
+#### Linux
+1. **.NET 10 SDK** – Install via your distribution's package manager (e.g., `sudo apt install dotnet-sdk-10.0` on Ubuntu) or follow the official [Linux .NET installation guide](https://learn.microsoft.com/en-us/dotnet/core/install/linux).
+2. **Git** – Install via your package manager (e.g., `sudo apt install git` or `sudo dnf install git`).
+
+---
+
+### Installation & Building from Source
+
+Once the prerequisites are installed, open your terminal (PowerShell or CMD on Windows) and follow these steps:
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/3060s/FruityScale.git
+
+2. Navigate into the project directory:
+   ```sh
+   cd FruityScale
+
+3. Restore dependencies
+   ```sh
+   dotnet restore
+
+4. Run the application from source
+   ```sh
+   dotnet run --project FruityScale.App
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
