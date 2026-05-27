@@ -6,7 +6,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![License][license-shield]][license-url]
 
 <br />
 <div align="center">
@@ -142,8 +142,8 @@ Project Link: [https://github.com/3060s/FruityScale](https://github.com/3060s/Fr
 [stars-url]: https://github.com/3060s/FruityScale/stargazers
 [issues-shield]: https://img.shields.io/github/issues/3060s/FruityScale.svg?style=for-the-badge
 [issues-url]: https://github.com/3060s/FruityScale/issues
-[license-shield]: https://img.shields.io/github/license/3060s/FruityScale.svg?style=for-the-badge
-[license-url]: https://github.com/3060s/FruityScale/blob/main/LICENSE.txt
+[license-shield]: https://img.shields.io/github/license/3060s/FruityScale?style=for-the-badge
+[license-url]: https://github.com/3060s/FruityScale/blob/main/LICENSE
 
 [CSharp-shield]: https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white
 [CSharp-url]: https://learn.microsoft.com/en-us/dotnet/csharp/
