@@ -37,7 +37,18 @@
                              Background="#141416"
                              BorderBrush="#2D2D34"
                              CornerRadius="6"
-                             VerticalContentAlignment="Center"/>
+                             VerticalContentAlignment="Center">
+                        <TextBox.InnerRightContent>
+                            <Button Content="Browse..." 
+                                    Command="{Binding BrowseFolderCommand}"
+                                    Background="#2D2D34"
+                                    Foreground="White"
+                                    Margin="0,0,4,0"
+                                    Padding="10,6"
+                                    FontSize="12"
+                                    Cursor="Hand"/>
+                        </TextBox.InnerRightContent>
+                    </TextBox>
                 </StackPanel>
                 
                 <!-- TODO: change pointer when on hover -->

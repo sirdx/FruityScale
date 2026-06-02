@@ -6,6 +6,7 @@ using FruityScale.Domain.MusicTheory;
 using FruityScale.Domain.Services;
 using FruityScale.Infrastructure.Persistence;
 using FruityScale.Infrastructure.Services;
+using FruityScale.Presentation.Services;
 using FruityScale.Presentation.ViewModels;
 using FruityScale.Presentation.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,7 @@ public partial class App : Avalonia.Application
             services.AddSingleton<INoteProvider, JsonNoteProvider>();
             services.AddSingleton<ISettingsService, JsonSettingsService>();
             services.AddSingleton<ISetupService, FlStudioSetupService>();
+            services.AddSingleton<IDialogService, AvaloniaDialogService>();
             
             services.AddSingleton<ScaleMatchingOrchestrator>();
             

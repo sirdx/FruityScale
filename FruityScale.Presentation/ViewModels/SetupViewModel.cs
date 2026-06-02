@@ -10,6 +10,7 @@ public partial class SetupViewModel : ViewModelBase
     private readonly MainWindowViewModel _mainNavigation;
     private readonly ISetupService _setupService;
     private readonly ISettingsService _settingsService;
+    private readonly IDialogService _dialogService;
     private readonly ILogger<SetupViewModel> _logger;
     
     [ObservableProperty]
@@ -23,14 +24,30 @@ public partial class SetupViewModel : ViewModelBase
         MainWindowViewModel mainNavigation,
         ISetupService setupService,
         ISettingsService settingsService,
+        IDialogService dialogService,
         ILogger<SetupViewModel> logger)
     {
         _mainNavigation = mainNavigation;
         _setupService = setupService;
         _settingsService = settingsService;
+        _dialogService = dialogService;
         _logger = logger;
         
         _logger.LogDebug("SetupViewModel initialized.");
+    }
+    
+    [RelayCommand]
+    private async Task BrowseFolderAsync()
+    {
+        _logger.LogDebug("Opening folder picker dialog...");
+        
+        var path = await _dialogService.SelectFolderAsync("Select FL Studio or Piano Roll Scripts Folder");
+        
+        if (!string.IsNullOrWhiteSpace(path))
+        {
+            _logger.LogInformation("User selected path via dialog: {Path}", path);
+            SelectedPath = path;
+        }
     }
     
     [RelayCommand(CanExecute = nameof(CanConfirm))]
