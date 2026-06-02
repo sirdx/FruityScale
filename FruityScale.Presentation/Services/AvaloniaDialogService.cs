@@ -20,4 +20,29 @@ public class AvaloniaDialogService : IDialogService
             return null;
         };
     }
+    
+    // internal constructor needed for tests
+    internal AvaloniaDialogService(Func<IStorageProvider?> storageProviderResolver)
+    {
+        _storageProviderResolver = storageProviderResolver;
+    }
+
+    public async Task<string?> SelectFolderAsync(string title)
+    {
+        var storageProvider = _storageProviderResolver();
+        if (storageProvider == null) return null;
+
+        var folders = await storageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+        {
+            Title = title,
+            AllowMultiple = false
+        });
+
+        if (folders.Count > 0)
+        {
+            return folders[0].Path.LocalPath;
+        }
+
+        return null;
+    }
 }
