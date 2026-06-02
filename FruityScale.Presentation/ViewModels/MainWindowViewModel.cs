@@ -8,6 +8,7 @@ namespace FruityScale.Presentation.ViewModels;
 public partial class MainWindowViewModel : ViewModelBase
 {
     private readonly ISettingsService _settingsService;
+    private readonly IDialogService _dialogService;
     private readonly ISetupService _setupService;
     private readonly ScaleMatchingOrchestrator _orchestrator;
     private readonly ILoggerFactory _loggerFactory;
@@ -18,12 +19,14 @@ public partial class MainWindowViewModel : ViewModelBase
     
     public MainWindowViewModel(
         ISettingsService settingsService, 
+        IDialogService dialogService, 
         ISetupService setupService, 
         ScaleMatchingOrchestrator orchestrator,
         ILoggerFactory loggerFactory,
         ILogger<MainWindowViewModel> logger)
     {
         _settingsService = settingsService;
+        _dialogService = dialogService;
         _setupService = setupService;
         _orchestrator = orchestrator;
         _loggerFactory = loggerFactory;
@@ -42,7 +45,7 @@ public partial class MainWindowViewModel : ViewModelBase
             _logger.LogInformation("No FL Studio path configured. Routing user to SetupView.");
             
             var setupLogger = _loggerFactory.CreateLogger<SetupViewModel>();
-            CurrentContent = new SetupViewModel(this, _setupService, _settingsService, setupLogger);
+            CurrentContent = new SetupViewModel(this, _setupService, _settingsService, _dialogService, setupLogger);
         }
         else
         {
